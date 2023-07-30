@@ -7,9 +7,14 @@ BLUE = (0, 191, 255)
 WIDTH, HEIGHT = 900, 500
 WIN = py.display.set_mode((WIDTH, HEIGHT))
 FPS = 100
+SPACESHIP_WIDTH, SPACESHIP_HEIGHT = 55, 40
 YELLOW_SPACESHIP = py.image.load(
     os.path.join('Assets', 'spaceship_yellow.png'))
+YELLOW_SPACESHIP = py.transform.rotate(py.transform.scale(
+    YELLOW_SPACESHIP, (SPACESHIP_WIDTH, SPACESHIP_HEIGHT)), 90)
 RED_SPACESHIP = py.image.load(os.path.join('Assets', 'spaceship_red.png'))
+RED_SPACESHIP = py.transform.rotate(py.transform.scale(
+    RED_SPACESHIP, (SPACESHIP_WIDTH, SPACESHIP_HEIGHT)), 270)
 
 
 def draw_window():
