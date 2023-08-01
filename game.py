@@ -5,9 +5,11 @@ import pygame as py
 import os
 VEL = 5
 BLUE = (0, 191, 255)
+BLACK = (0, 0, 0)
 WIDTH, HEIGHT = 900, 500
 WIN = py.display.set_mode((WIDTH, HEIGHT))
 FPS = 100
+BORDER = py.Rect(WIDTH/2, 0, 10, HEIGHT)
 SPACESHIP_WIDTH, SPACESHIP_HEIGHT = 55, 40
 YELLOW_SPACESHIP = py.image.load(
     os.path.join('Assets', 'spaceship_yellow.png'))
@@ -20,6 +22,7 @@ RED_SPACESHIP = py.transform.rotate(py.transform.scale(
 
 def draw_window(RED, YELLOW):
     WIN.fill(BLUE)
+    py.draw.rect(WIN, BLACK, BORDER)
     WIN.blit(YELLOW_SPACESHIP, (YELLOW.x, YELLOW.y))
     WIN.blit(RED_SPACESHIP, (RED.x, RED.y))
     py.display.update()
@@ -28,13 +31,13 @@ def draw_window(RED, YELLOW):
 def yellow_movement(KEYS, YELLOW):
 
     # movement of spaceships with arrow keys and WASD respectively
-    if KEYS[py.K_a]:  # LEFT
+    if KEYS[py.K_a] and YELLOW.x > 0:  # LEFT
         YELLOW.x -= VEL
-    elif KEYS[py.K_d]:  # RIGHT
+    elif KEYS[py.K_d] and YELLOW.x < BORDER.x:  # RIGHT
         YELLOW.x += VEL
-    elif KEYS[py.K_w]:  # UP
+    elif KEYS[py.K_w] and YELLOW.y > 0:  # UP
         YELLOW.y -= VEL
-    elif KEYS[py.K_s]:  # DOWN
+    elif KEYS[py.K_s] and YELLOW.y < HEIGHT:  # DOWN
         YELLOW.y += VEL
     return YELLOW
 
