@@ -31,26 +31,26 @@ def draw_window(RED, YELLOW):
 def yellow_movement(KEYS, YELLOW):
 
     # movement of spaceships with arrow keys and WASD respectively
-    if KEYS[py.K_a] and YELLOW.x > 0:  # LEFT
+    if KEYS[py.K_a] and YELLOW.x - VEL > 0:  # LEFT
         YELLOW.x -= VEL
-    elif KEYS[py.K_d] and YELLOW.x < BORDER.x:  # RIGHT
+    elif KEYS[py.K_d] and YELLOW.x + YELLOW.width + VEL < BORDER.x:  # RIGHT
         YELLOW.x += VEL
-    elif KEYS[py.K_w] and YELLOW.y > 0:  # UP
+    elif KEYS[py.K_w] and YELLOW.y - VEL > 0:  # UP
         YELLOW.y -= VEL
-    elif KEYS[py.K_s] and YELLOW.y < HEIGHT:  # DOWN
+    elif KEYS[py.K_s] and YELLOW.y + VEL + YELLOW.height < HEIGHT - 10:  # DOWN
         YELLOW.y += VEL
     return YELLOW
 
 
 def red_movement(KEYS, RED):
     # movement of spaceships with arrow keys and WASD respectively
-    if KEYS[py.K_UP]:
+    if KEYS[py.K_UP] and RED.y - VEL > 0:
         RED.y -= VEL
-    elif KEYS[py.K_DOWN]:
+    elif KEYS[py.K_DOWN] and RED.y + VEL + RED.height < HEIGHT-10:
         RED.y += VEL
-    elif KEYS[py.K_RIGHT]:
+    elif KEYS[py.K_RIGHT] and RED.x + RED.width + VEL < WIDTH:
         RED.x += VEL
-    elif KEYS[py.K_LEFT]:
+    elif KEYS[py.K_LEFT] and RED.x - VEL > BORDER.x + BORDER.width:
         RED.x -= VEL
     return RED
 
@@ -66,8 +66,8 @@ def game():
         for event in py.event.get():
             if event.type == py.QUIT:
                 RUN = False
-            KEYS = py.key.get_pressed()
-            yellow_movement(KEYS, YELLOW)
-            red_movement(KEYS, RED)
-            draw_window(RED, YELLOW)
+        KEYS = py.key.get_pressed()
+        yellow_movement(KEYS, YELLOW)
+        red_movement(KEYS, RED)
+        draw_window(RED, YELLOW)
     py.quit()
