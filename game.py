@@ -21,8 +21,10 @@ RED_HIT = py.USEREVENT + 2
 
 MAX_BULLETS = 3
 
-BULLET_HIT_SOUND = py.mixer.load(os.path.join('Assets', 'Grenade+1.mp3'))
-BULLET_FIRE = py.mixer.load(os.path.join('Assets', 'Gun+Silencer.mp3'))
+BULLET_HIT_SOUND = py.mixer.Sound(os.path.join('Assets', 'Grenade+1.mp3'))
+BULLET_FIRE = py.mixer.Sound(os.path.join('Assets', 'Gun+Silencer.mp3'))
+WINNER_SOUND = py.mixer.Sound(os.path.join(
+    'Assets', 'mixkit-animated-small-group-applause-523.mp3'))
 
 HEALTH_FONT = py.font.SysFont('comicsans', 40)
 WINNER_FONT = py.font.SysFont('comicsans', 100)
@@ -101,6 +103,7 @@ def draw_winner(text):
     WIN.blit(draw_text, (WIDTH//2-draw_text.get_width() //
              2, HEIGHT//2-draw_text.get_height()//2))
     py.display.update()
+    WINNER_SOUND.play()
     py.time.delay(5000)
 
 
@@ -151,8 +154,10 @@ def game():
                     BULLET_FIRE.play()
             if event.type == RED_HIT:
                 red_health -= 1
+                BULLET_HIT_SOUND.play()
             if event.type == YELLOW_HIT:
                 yellow_health -= 1
+                BULLET_HIT_SOUND.play()
         winner_text = ""
         if red_health <= 0:
             winner_text = "YELLOW WINS !!!!"
