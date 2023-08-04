@@ -14,7 +14,7 @@ BLUE = (0, 191, 255)
 BLACK = (0, 0, 0)
 WIDTH, HEIGHT = 900, 500
 WIN = py.display.set_mode((WIDTH, HEIGHT))
-FPS = 144
+FPS = 60
 BORDER = py.Rect(WIDTH//2, 0, 10, HEIGHT)
 SPACESHIP_WIDTH, SPACESHIP_HEIGHT = 55, 40
 YELLOW_SPACESHIP = py.image.load(
@@ -27,19 +27,6 @@ RED_SPACESHIP = py.transform.rotate(py.transform.scale(
 
 SPACE = py.transform.scale(py.image.load(
     os.path.join('Assets', 'space.png')), (WIDTH, HEIGHT))
-
-
-def draw_window(RED, YELLOW, Red_Bullets, Yellow_Bullets):
-    WIN.fill(BLUE)
-    WIN.blit(SPACE, (0, 0))
-    py.draw.rect(WIN, BLACK, BORDER)
-    WIN.blit(YELLOW_SPACESHIP, (YELLOW.x, YELLOW.y))
-    WIN.blit(RED_SPACESHIP, (RED.x, RED.y))
-    py.display.update()
-    for bullet in Red_Bullets:
-        py.draw.rect(WIN, REDCO, bullet)
-    for bullet in Yellow_Bullets:
-        py.draw.rect(WIN, YELLOWCO, bullet)
 
 
 def yellow_movement(KEYS, YELLOW):
@@ -87,6 +74,19 @@ def handle_bullets(Yellow_Bullets, Red_Bullets, YELLOW, RED):
             Red_Bullets.remove(bullet)
 
 
+def draw_window(RED, YELLOW, Red_Bullets, Yellow_Bullets):
+    WIN.fill(BLUE)
+    WIN.blit(SPACE, (0, 0))
+    py.draw.rect(WIN, BLACK, BORDER)
+    WIN.blit(YELLOW_SPACESHIP, (YELLOW.x, YELLOW.y))
+    WIN.blit(RED_SPACESHIP, (RED.x, RED.y))
+    for bullet in Red_Bullets:
+        py.draw.rect(WIN, REDCO, bullet)
+    for bullet in Yellow_Bullets:
+        py.draw.rect(WIN, YELLOWCO, bullet)
+    py.display.update()
+
+
 def game():
     Red_Bullets = []
     Yellow_Bullets = []
@@ -101,18 +101,18 @@ def game():
             if event.type == py.QUIT:
                 RUN = False
             if event.type == py.KEYDOWN:
-                if event.type == py.K_LCTRL and len(Yellow_Bullets) < MAX_BULLETS:
+                if event.key == py.K_LALT and len(Yellow_Bullets) < MAX_BULLETS:
                     bullet = py.Rect(YELLOW.x+YELLOW.width,
-                                     YELLOW.y+YELLOW.height//2-2, 10, 5)
+                                     YELLOW.y+YELLOW.height//2+4, 10, 5)
                     Yellow_Bullets.append(bullet)
 
-                if event.type == py.K_RCTRL and len(Red_Bullets) < MAX_BULLETS:
+                if event.key == py.K_RALT and len(Red_Bullets) < MAX_BULLETS:
                     bullet = py.Rect(RED.x,
-                                     RED.y+RED.height//2-2, 10, 5)
+                                     RED.y+RED.height//2+4, 10, 5)
                     Red_Bullets.append(bullet)
-        handle_bullets(Yellow_Bullets, Red_Bullets, YELLOW, RED)
         KEYS = py.key.get_pressed()
         yellow_movement(KEYS, YELLOW)
         red_movement(KEYS, RED)
+        handle_bullets(Yellow_Bullets, Red_Bullets, YELLOW, RED)
         draw_window(RED, YELLOW, Red_Bullets, Yellow_Bullets)
     py.quit()
